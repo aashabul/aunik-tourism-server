@@ -8,8 +8,6 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// user: traveller1
-//password: QmU6B4T7jgV7yUyP
 
 app.use(cors());
 app.use(express.json());
@@ -23,16 +21,14 @@ async function run() {
     try {
         await client.connect();
         const database = client.db("aunik-tourism");
-        const haiku = database.collection("offers");
+        const offersCollection = database.collection("offers");
 
 
-        //post api
-        app.post('/offerings', async (req, res) => {
-
-            haiku.insertOne(req.body).then((result) => {
-                res.send(result.insertedId);
-            })
-
+        //get offers from server
+        app.get('/offerings', async (req, res) => {
+            const cursor = offersCollection.find({});
+            const offers = await cursor.toArray();
+            res.send(offers);
         });
     } finally {
         // await client.close();
