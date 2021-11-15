@@ -22,7 +22,7 @@ async function run() {
         await client.connect();
         const database = client.db("aunik-tourism");
         const offersCollection = database.collection("offers");
-
+        const selectedOfferCollection = database.collection("selectedOffers");
 
         //get offers from server
         app.get('/offerings', async (req, res) => {
@@ -30,6 +30,15 @@ async function run() {
             const offers = await cursor.toArray();
             res.send(offers);
         });
+
+        //post order to server
+        app.post('/selectedOffers', async (req, res) => {
+            const placeOrder = req.body;
+            const selectedOffers = await selectedOfferCollection.insertOne(placeOrder);
+            console.log(selectedOffers);
+            res.json(selectedOffers);
+        })
+
     } finally {
         // await client.close();
     }
