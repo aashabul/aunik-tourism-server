@@ -32,20 +32,13 @@ async function run() {
             res.send(offers);
         });
 
-        //post selected offers to server
-        app.post('/selectedOffers', async (req, res) => {
-            const selected = req.body;
-            const selectedOffers = await selectedOffersCollection.insertOne(selected);
-            console.log(selectedOffers);
-            res.json(selectedOffers);
+        //post new offers to server
+        app.post('/offerings', async (req, res) => {
+            const offer = req.body;
+            const newOffer = await offersCollection.insertOne(offer);
+            console.log(newOffer);
+            res.json(newOffer);
         })
-
-        //get selected offers from server
-        app.get('/selectedOffers', async (req, res) => {
-            const findSelected = selectedOffersCollection.find({});
-            const selectedResult = await findSelected.toArray();
-            res.send(selectedResult);
-        });
 
         //post orders to server
         app.post('/orders', async (req, res) => {
@@ -60,6 +53,21 @@ async function run() {
             const findOrders = ordersCollection.find({});
             const ordersResult = await findOrders.toArray();
             res.send(ordersResult);
+        });
+
+        //post selected offers to server
+        app.post('/selectedOffers', async (req, res) => {
+            const selected = req.body;
+            const selectedOffers = await selectedOffersCollection.insertOne(selected);
+            console.log(selectedOffers);
+            res.json(selectedOffers);
+        })
+
+        //get selected offers from server
+        app.get('/selectedOffers', async (req, res) => {
+            const findSelected = selectedOffersCollection.find({});
+            const selectedResult = await findSelected.toArray();
+            res.send(selectedResult);
         });
 
 
